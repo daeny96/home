@@ -1,2 +1,2 @@
 # home
-Make to do blog
+to do make a blog
