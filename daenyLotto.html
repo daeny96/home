@@ -1,0 +1,124 @@
+<!-- ver.2 -->
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="utf-8">
+		<title>Daeny LOTTO</title>
+	</head>
+	
+	<body>
+		<div class="mainDiv_wrap">
+			<div class="mainDiv">
+				<div class="frmA">
+					<button onclick="getLotto()" style="width:80px; height:30px;">Create</button>
+				</div>
+				<div class="frmB" id="print">
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+			let nums = []
+			let result = []
+			let nCreated = 0
+			
+			<!-- default functions -->
+			function getLotto() {
+				if (nCreated == 5) return
+			
+				this.init()
+				
+				let round = 6
+				for (var i = 0; i < round; i++) {
+					this.getNumber(this.nums)
+				}
+				
+				this.result.sort(this.compareNumbers)
+				console.log(this.result)
+				
+				let printArea = document.getElementById("print")
+				
+				let newDiv = document.createElement("div")
+				newDiv.setAttribute("class", "print_item")
+				
+				let newText = document.createTextNode(this.result)
+				newDiv.append(newText)
+				
+				printArea.appendChild(newDiv)
+				
+				nCreated = nCreated + 1
+			}
+			
+			<!-- private functions -->
+			function init() {
+				const totalCnt = 45
+				this.nums = []
+				this.result = []
+				for (var i = 1; i <= totalCnt; i++) {
+					this.nums.push(i)
+				}
+			}
+			
+			function getNumber(nums) {
+				var tmpNums = []
+				var tmpResult = []
+				
+				nums.forEach((element) => tmpNums.push(element))
+				
+				let seq = 0
+				while (seq < nums.length) {
+					var numsLength = tmpNums.length
+					var numIdx = this.getRandomNumber(numsLength)
+					var num = tmpNums[numIdx]
+					var isExist = false
+					
+					for (var i = 0; i < tmpResult.length; i++) {
+						if (tmpResult[i] == num) {
+							isExist = true
+							break
+						}
+					}
+					
+					if (!isExist) {
+						tmpResult.push(num)
+						tmpNums.splice(numIdx, 1)
+						seq = seq + 1
+					}
+				}
+				
+				var numIdx = this.getRandomNumber(tmpResult.length)
+				var num = tmpResult[numIdx]
+				
+				tmpResult.splice(numIdx, 1)
+				
+				this.nums = tmpResult
+				this.result.push(num)
+			}
+			
+			function getRandomNumber(totalCnt) {
+				return Math.floor(Math.random() * totalCnt)
+			}
+			
+			function compareNumbers(a, b) {
+				return a - b
+			}
+		</script>
+	</body>
+</html>
+
+<style>
+	body, div { margin: 0; border: 0;}
+	
+	.mainDiv_wrap { width:100%; height:300px; background:#aaaaaa; overflow:hidden;}
+	.mainDiv { display:block; margin:0 auto; width:300px; height:300px; background: #ffffff; }
+	
+	.frmA {display:block; float:left; margin:20px 0px; width:300px; text-align:center; }
+	.frmB {display:block; float:left; margin:22px 0; width:300px; height:190px; text-align:center; font-size:1.23rem; font-weight:bold; background:#d0d0d0; overflow:hidden;}
+	
+	.print_item {display:block; width:100%; float:left; margin:6px 0; background:#ffffff; border-radius: 25px;}
+	
+	<!-- @media all and (max-width: 500px) { -->
+		<!-- .mainDiv_wrap { width:100%; height:500px; background:#aaaaaa;} -->
+		<!-- .mainDiv { width:100%; } -->
+	<!-- } -->
+</style>
